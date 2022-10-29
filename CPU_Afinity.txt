@@ -1,0 +1,29 @@
+Iremos configurar CPU Afinity No Linux
+
+
+1º Para facilitar e automatizar essa tarefa podemos criar também um script SHELL SCRIPT.
+
+#!/bin/bash
+
+cd /root/processos/
+
+#####COLETANDO PIDS DOS PROCESSOS DO APACHE E DO PHP #################
+
+pidof httpd | sed 's/ /\n/g' > /root/processos/httpd
+pidof php-fpm | sed 's/ /\n/g' > /root/processos/php
+
+######DEFININDO PROCESSOS DO APACHE PARA A CPU  0-1 ################3
+
+for i in $(cat /root/processos/httpd)
+do
+        taskset -cp 0,1 $i
+done
+
+######DEFININDO PROCESSOS DO PHP PARA A CPU  2 ################3
+
+for j in $(cat /root/processos/php)
+ do
+        taskset -cp 2 $j
+ done
+
+4º Passo saia do arquivo e salve.
